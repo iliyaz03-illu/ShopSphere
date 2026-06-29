@@ -58,35 +58,25 @@
 
     <div class="product-container">
 
-        <div class="card">
-            <img src="{% static 'images/products/iphone.jpg' %}" alt="iPhone">
-
-            <h3>iPhone 16</h3>
-
-            <p>₹79,999</p>
-
-            <button>Add to Cart</button>
-        </div>
+        {% for product in products %}
 
         <div class="card">
-            <img src="{% static 'images/products/laptop.jpg' %}" alt="Laptop">
 
-            <h3>Gaming Laptop</h3>
+            <img src="{{ product.image.url }}" alt="{{ product.name }}">
 
-            <p>₹89,999</p>
+            <h3>{{ product.name }}</h3>
 
-            <button>Add to Cart</button>
-        </div>
-
-        <div class="card">
-            <img src="{% static 'images/products/headphones.jpg' %}" alt="Headphones">
-
-            <h3>Wireless Headphones</h3>
-
-            <p>₹3,499</p>
+            <p>₹ {{ product.price }}</p>
 
             <button>Add to Cart</button>
+
         </div>
+
+        {% empty %}
+
+        <h2>No Products Available</h2>
+
+        {% endfor %}
 
     </div>
 
