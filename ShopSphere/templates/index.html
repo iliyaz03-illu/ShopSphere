@@ -1,19 +1,57 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
 
+<!-- Hero Section -->
 <section class="hero">
+    <div class="hero-content">
+        <h1>BIG SALE 50% OFF</h1>
 
-    <h1>Welcome to ShopSphere</h1>
+        <p>
+            Upgrade Your Lifestyle with the Latest Electronics,
+            Fashion & Accessories.
+        </p>
 
-    <p>
-        Discover Amazing Products at Affordable Prices.
-    </p>
+        <div class="hero-buttons">
+            <button class="btn-primary">Shop Now</button>
+            <button class="btn-secondary">Explore Products</button>
+        </div>
+    </div>
+</section>
 
-    <button>Shop Now</button>
+<!-- Categories -->
+<section class="categories">
+
+    <h2>Shop by Category</h2>
+
+    <div class="category-container">
+
+        <div class="category-card">
+            <img src="{% static 'images/categories/electronics.png' %}" alt="Electronics">
+            <h3>Electronics</h3>
+        </div>
+
+        <div class="category-card">
+            <img src="{% static 'images/categories/fashion.png' %}" alt="Fashion">
+            <h3>Fashion</h3>
+        </div>
+
+        <div class="category-card">
+            <img src="{% static 'images/categories/shoes.png' %}" alt="Shoes">
+            <h3>Shoes</h3>
+        </div>
+
+        <div class="category-card">
+            <img src="{% static 'images/categories/watch.png' %}" alt="Watch">
+            <h3>Watches</h3>
+        </div>
+
+    </div>
 
 </section>
 
+<!-- Products -->
 <section class="products">
 
     <h2>Featured Products</h2>
@@ -21,18 +59,33 @@
     <div class="product-container">
 
         <div class="card">
-            📱
-            <h3>Smart Phone</h3>
+            <img src="{% static 'images/products/iphone.jpg' %}" alt="iPhone">
+
+            <h3>iPhone 16</h3>
+
+            <p>₹79,999</p>
+
+            <button>Add to Cart</button>
         </div>
 
         <div class="card">
-            💻
-            <h3>Laptop</h3>
+            <img src="{% static 'images/products/laptop.jpg' %}" alt="Laptop">
+
+            <h3>Gaming Laptop</h3>
+
+            <p>₹89,999</p>
+
+            <button>Add to Cart</button>
         </div>
 
         <div class="card">
-            🎧
-            <h3>Headphones</h3>
+            <img src="{% static 'images/products/headphones.jpg' %}" alt="Headphones">
+
+            <h3>Wireless Headphones</h3>
+
+            <p>₹3,499</p>
+
+            <button>Add to Cart</button>
         </div>
 
     </div>
