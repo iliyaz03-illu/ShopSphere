@@ -149,7 +149,10 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 import dj_database_url
+import os
 
-DATABASES["default"] = dj_database_url.config(
-    default=DATABASES["default"]
-)
+DATABASES = {
+    "default": dj_database_url.config(
+        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}"
+    )
+}
