@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: shopsphere
+    env: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn ecommerce.wsgi:application"
