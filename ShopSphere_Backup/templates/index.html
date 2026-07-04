@@ -1,0 +1,233 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-content">
+
+        <h1>BIG SALE 50% OFF</h1>
+
+        <p>
+            Upgrade Your Lifestyle with the Latest Electronics,
+            Fashion & Accessories.
+        </p>
+
+        <div class="hero-buttons">
+            <button class="btn-primary">Shop Now</button>
+            <button class="btn-secondary">Explore Products</button>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- Categories -->
+<section class="categories" id="categories">
+
+    <h2>Shop by Category</h2>
+
+    <div class="category-container">
+
+        <a href="/?category=Electronics" class="category-link">
+            <div class="category-card">
+                <img src="{% static 'images/categories/electronics.png' %}" alt="Electronics">
+                <h3>Electronics</h3>
+            </div>
+        </a>
+
+        <a href="/?category=Fashion" class="category-link">
+            <div class="category-card">
+                <img src="{% static 'images/categories/fashion.png' %}" alt="Fashion">
+                <h3>Fashion</h3>
+            </div>
+        </a>
+
+        <a href="/?category=Shoes" class="category-link">
+            <div class="category-card">
+                <img src="{% static 'images/categories/shoes.png' %}" alt="Shoes">
+                <h3>Shoes</h3>
+            </div>
+        </a>
+
+        <a href="/?category=Watches" class="category-link">
+            <div class="category-card">
+                <img src="{% static 'images/categories/watch.png' %}" alt="Watches">
+                <h3>Watches</h3>
+            </div>
+        </a>
+
+    </div>
+
+</section>
+
+
+<!-- Products -->
+<section class="products">
+
+    {% if request.GET.q %}
+        <h2>Search Results for "{{ request.GET.q }}"</h2>
+    {% else %}
+        <h2>Featured Products</h2>
+    {% endif %}
+
+    <div class="product-container">
+
+        {% for product in products %}
+
+        <div class="card">
+
+            <div class="product-rating">
+                ★★★★★
+            </div>
+
+            <a href="{% url 'product_detail' product.pk %}">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                <h3>{{ product.name }}</h3>
+            </a>
+
+            <p>₹ {{ product.price }}</p>
+
+            {% if product.stock > 0 %}
+
+            <p class="stock">
+                ✓ In Stock ({{ product.stock }})
+            </p>
+
+{            % else %}
+
+            <p style="color:red;font-weight:bold;">
+                ✖ Out of Stock
+            </p>
+
+            {% endif %}
+
+
+            <a href="{% url 'product_detail' product.pk %}">
+                <button>View Details</button>
+            </a>
+
+            <br><br>
+
+            <a href="{% url 'add_to_cart' product.id %}">
+                <button>Add to Cart</button>
+            </a>
+
+            <a href="{% url 'toggle_favorite' product.id %}">
+                <button style="background:#e11d48;">
+                    ❤️ Wishlist
+                </button>
+            </a>
+
+        </div>
+
+        {% empty %}
+
+        <h2>No Products Available</h2>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+<!-- Trending Products -->
+
+<section class="products">
+
+    <h2>🔥 Trending Products</h2>
+
+    <div class="product-container">
+
+        {% for product in products|slice:":4" %}
+
+        <div class="card">
+
+            <a href="{% url 'product_detail' product.pk %}">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                <h3>{{ product.name }}</h3>
+            </a>
+
+            <p>₹ {{ product.price }}</p>
+
+            <a href="{% url 'add_to_cart' product.id %}">
+                <button>Add to Cart</button>
+            </a>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+<!-- New Arrivals -->
+
+<section class="products">
+
+    <h2>🆕 New Arrivals</h2>
+
+    <div class="product-container">
+
+        {% for product in products|slice:"4:8" %}
+
+        <div class="card">
+
+            <a href="{% url 'product_detail' product.pk %}">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                <h3>{{ product.name }}</h3>
+            </a>
+
+            <p>₹ {{ product.price }}</p>
+
+            <a href="{% url 'add_to_cart' product.id %}">
+                <button>Add to Cart</button>
+            </a>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+<!-- Why Choose Us -->
+
+<section class="features">
+
+    <h2>Why Shop With ShopSphere?</h2>
+
+    <div class="features-container">
+
+        <div class="feature-card">
+            <div class="feature-icon">🚚</div>
+            <h3>Free Shipping</h3>
+            <p>Free delivery on orders above ₹999.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">🔒</div>
+            <h3>Secure Payments</h3>
+            <p>100% safe and secure payment methods.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">↩️</div>
+            <h3>Easy Returns</h3>
+            <p>7-day hassle-free return policy.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">💬</div>
+            <h3>24/7 Support</h3>
+            <p>Our team is always here to help you.</p>
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

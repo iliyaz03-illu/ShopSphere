@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="products">
+
+    <h2>👤 My Profile</h2>
+
+    <br>
+
+    <div class="card" style="max-width:700px;margin:auto;">
+
+        {% if profile.image %}
+
+            <img
+                src="{{ profile.image.url }}"
+                style="width:180px;height:180px;border-radius:50%;object-fit:cover;margin:auto;"
+            >
+
+        {% else %}
+
+            <div style="
+                width:180px;
+                height:180px;
+                border-radius:50%;
+                background:#2563eb;
+                color:white;
+                display:flex;
+                justify-content:center;
+                align-items:center;
+                font-size:70px;
+                margin:auto;
+            ">
+                {{ request.user.username|first|upper }}
+            </div>
+
+        {% endif %}
+
+        <br>
+
+        <h3 style="text-align:center;">
+            {{ request.user.username }}
+        </h3>
+
+        <p style="text-align:center;color:gray;">
+            {{ request.user.email }}
+        </p>
+
+        <hr>
+
+        <h3>📊 Account Summary</h3>
+
+        <p><strong>📦 Orders :</strong> {{ order_count }}</p>
+
+        <p><strong>❤️ Wishlist :</strong> {{ wishlist_count }}</p>
+
+        <p><strong>🛒 Cart :</strong> {{ cart_count }}</p>
+
+        <hr>
+
+        <h3>✏️ Edit Profile</h3>
+
+        <form method="POST" enctype="multipart/form-data">
+
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+            <button type="submit">
+                💾 Save Profile
+            </button>
+
+        </form>
+
+        <br>
+
+        <hr>
+
+        <h3>📍 Saved Address</h3>
+
+        <p><strong>Phone :</strong> {{ profile.phone|default:"Not Added" }}</p>
+
+        <p><strong>Address :</strong> {{ profile.address|default:"Not Added" }}</p>
+
+        <p><strong>City :</strong> {{ profile.city|default:"Not Added" }}</p>
+
+        <p><strong>State :</strong> {{ profile.state|default:"Not Added" }}</p>
+
+        <p><strong>Pincode :</strong> {{ profile.pincode|default:"Not Added" }}</p>
+
+        <hr>
+
+        <h3>📅 Member Since</h3>
+
+        <p>
+
+            {{ request.user.date_joined|date:"d M Y" }}
+
+        </p>
+
+    </div>
+
+</div>
+
+{% endblock %}

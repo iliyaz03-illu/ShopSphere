@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="products">
+
+    <h2>❤️ My Wishlist</h2>
+
+    <div class="product-container">
+
+        {% for item in favorites %}
+
+        <div class="card">
+
+            <a href="{% url 'product_detail' item.product.id %}">
+                <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+                <h3>{{ item.product.name }}</h3>
+            </a>
+
+            <p>₹ {{ item.product.price }}</p>
+
+            <a href="{% url 'product_detail' item.product.id %}">
+                <button>View Details</button>
+            </a>
+
+            <a href="{% url 'toggle_favorite' item.product.id %}">
+                <button style="background:red;">
+                    ❤️ Remove
+                </button>
+            </a>
+
+        </div>
+
+        {% empty %}
+
+        <h2>Your wishlist is empty.</h2>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+{% endblock %}

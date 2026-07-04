@@ -1,0 +1,50 @@
+<nav class="navbar">
+
+    <!-- Logo -->
+    <div class="logo">
+        <a href="{% url 'home' %}">
+            🛒 <span>ShopSphere</span>
+        </a>
+    </div>
+
+    <!-- Search -->
+    <form action="{% url 'home' %}" method="GET" class="search-box">
+        <input
+            type="text"
+            name="q"
+            placeholder="Search products..."
+            value="{{ request.GET.q }}"
+        >
+        <button type="submit">🔍</button>
+    </form>
+
+    <!-- Navigation -->
+    <ul class="nav-links">
+
+        <li><a href="{% url 'home' %}">Home</a></li>
+
+        <li><a href="{% url 'home' %}#categories">Categories</a></li>
+
+        <li><a href="{% url 'cart' %}">🛒 Cart</a></li>
+
+        <li><a href="{% url 'favorites' %}">❤️ Wishlist</a></li>
+
+        <li><a href="{% url 'my_orders' %}">📦 My Orders</a></li>
+
+        {% if user.is_authenticated %}
+
+            <li><a href="{% url 'profile' %}">👤 {{ user.username }}</a></li>
+
+            <li><a href="{% url 'logout' %}">Logout</a></li>
+
+        {% else %}
+
+            <li><a href="{% url 'login' %}">Login</a></li>
+
+            <li><a href="{% url 'register' %}" class="register-btn">Register</a></li>
+
+        {% endif %}
+
+    </ul>
+
+</nav>

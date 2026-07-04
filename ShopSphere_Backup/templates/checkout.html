@@ -1,0 +1,289 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="products">
+
+    <h2 style="margin-bottom:30px;">
+        Checkout
+    </h2>
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <div style="display:flex;gap:40px;align-items:flex-start;flex-wrap:wrap;">
+
+            <!-- LEFT SIDE -->
+
+            <div style="flex:2;min-width:350px;">
+
+                <div class="card">
+
+                    <h3>Shipping Address</h3>
+
+                    <hr>
+
+                    <br>
+
+                    {% if form.errors %}
+
+                    <div style="
+                        background:#fee2e2;
+                        color:#b91c1c;
+                        padding:12px;
+                        border-radius:8px;
+                        margin-bottom:20px;
+                    ">
+
+                        {{ form.errors }}
+
+                    </div>
+
+                    {% endif %}
+
+                    <div class="form-group">
+
+                        <label>Full Name</label>
+
+                        {{ form.full_name }}
+
+                    </div>
+
+                    <div class="form-group">
+                    
+                        <label>Phone Number</label>
+                    
+                        {{ form.phone }}
+                    
+                    </div>
+                    
+                    <div class="form-group">
+                    
+                        <label>Address</label>
+                    
+                        {{ form.address }}
+                    
+                    </div>
+                    
+                    <div class="row">
+                    
+                        <div class="form-group">
+                    
+                            <label>City</label>
+                    
+                            {{ form.city }}
+                    
+                        </div>
+                    
+                        <div class="form-group">
+                    
+                            <label>State</label>
+                    
+                            {{ form.state }}
+                    
+                        </div>
+                    
+                    </div>
+                    
+                    <div class="form-group">
+                    
+                        <label>Pincode</label>
+                    
+                        {{ form.pincode }}
+                    
+                    </div>
+
+                </div>
+
+                <br>
+
+                <h3>Your Cart</h3>
+
+                <br>
+
+                {% for item in cart_items %}
+
+                <div class="card">
+
+                    <h3>{{ item.product.name }}</h3>
+
+                    <p>Price : ₹ {{ item.product.price }}</p>
+
+                    <p>Quantity : {{ item.quantity }}</p>
+
+                    <p>Total : ₹ {{ item.item_total }}</p>
+
+                </div>
+
+                <br>
+
+                {% empty %}
+
+                <div class="card">
+
+                    <h3>Your cart is empty.</h3>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+            <!-- RIGHT SIDE -->
+
+            <div style="
+                flex:1;
+                min-width:300px;
+                background:white;
+                padding:25px;
+                border-radius:12px;
+                box-shadow:0 8px 20px rgba(0,0,0,.08);
+            ">
+
+                <h2>Order Summary</h2>
+
+                <hr>
+
+                <br>
+
+                <label>
+
+                    <strong>Coupon Code</strong>
+
+                </label>
+
+                <br><br>
+
+                <input
+                    type="text"
+                    name="coupon"
+                    value="{{ coupon_code }}"
+                    placeholder="Enter Coupon Code"
+                    style="
+                        width:100%;
+                        padding:12px;
+                        border:1px solid #ccc;
+                        border-radius:8px;
+                    "
+                >
+
+                <br><br>
+
+                <button
+                    type="submit"
+                    name="action"
+                    value="coupon"
+                    style="
+                        width:100%;
+                        background:#16a34a;
+                        color:white;
+                        border:none;
+                        padding:12px;
+                        border-radius:8px;
+                        cursor:pointer;
+                    "
+                >
+
+                    Apply Coupon
+
+                </button>
+
+                {% if message %}
+
+                <div style="
+                    margin-top:15px;
+                    padding:10px;
+                    border-radius:8px;
+                    font-weight:bold;
+                    background:{% if success %}#dcfce7{% else %}#fee2e2{% endif %};
+                    color:{% if success %}green{% else %}red{% endif %};
+                ">
+
+                    {{ message }}
+
+                </div>
+
+                {% endif %}
+
+                <br>
+
+                <hr>
+
+                <br>
+
+                <p>
+
+                    <strong>Subtotal</strong>
+
+                    <span style="float:right;">
+
+                        ₹ {{ total }}
+
+                    </span>
+
+                </p>
+
+                <br>
+
+                <p>
+
+                    <strong>Discount</strong>
+
+                    <span style="float:right;color:green;">
+
+                        - ₹ {{ discount }}
+
+                    </span>
+
+                </p>
+
+                <br>
+
+                <hr>
+
+                <br>
+
+                <h2>
+
+                    Grand Total
+
+                    <span style="float:right;">
+
+                        ₹ {{ grand_total }}
+
+                    </span>
+
+                </h2>
+
+                <br><br>
+
+                <button
+                    type="submit"
+                    name="action"
+                    value="payment"
+                    style="
+                        width:100%;
+                        padding:15px;
+                        background:#2563eb;
+                        color:white;
+                        border:none;
+                        border-radius:10px;
+                        cursor:pointer;
+                        font-size:18px;
+                    "
+                >
+
+                    Continue to Payment →
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}
