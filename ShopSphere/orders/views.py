@@ -262,33 +262,19 @@ def payment_success(request):
 @login_required
 def place_order(request):
 
-    cart_items = Cart.objects.filter(
-        user=request.user
-    )
+    cart_items = Cart.objects.filter(user=request.user)
 
     if not cart_items.exists():
-
         return redirect("cart")
 
     shipping = request.session.get("shipping")
 
     if not shipping:
-
         return redirect("checkout")
 
-    payment_method = request.session.get(
-        "payment_method",
-        "UPI"
-    )
+    payment_method = request.session.get("payment_method", "UPI")
 
-    transaction = request.session.get(
-        "transaction"
-    )
-
-    coupon_code = request.session.get(
-        "coupon",
-        ""
-    )
+    coupon_code = request.session.get("coupon", "")
 
     total = Decimal("0.00")
 
@@ -297,10 +283,9 @@ def place_order(request):
 
     discount = Decimal("0.00")
 
+    # Apply coupon if available
     if coupon_code:
-
         try:
-
             coupon = Coupon.objects.get(
                 code__iexact=coupon_code,
                 active=True
@@ -312,70 +297,73 @@ def place_order(request):
             ) / Decimal("100")
 
         except Coupon.DoesNotExist:
+            discount = Decimal("0.00")
+            coupon_code = ""
 
-            pass
+    # CREATE ORDERS (Always)
+    for item in cart_items:
 
-        for item in cart_items:
-      
-          item_total = item.product.price * item.quantity
-      
-          # Calculate this product's share of the discount
-          item_discount = Decimal("0.00")
-      
-          if total > 0:
-      
-              item_discount = (
-                  item_total / total
-              ) * discount
-      
-          final_price = item_total - item_discount
-      
-          order = Order.objects.create(
-      
-              user=request.user,
-      
-              product=item.product,
-      
-              quantity=item.quantity,
-      
-              total_price=final_price,
-      
-              full_name=shipping["full_name"],
-      
-              phone=shipping["phone"],
-      
-              address=shipping["address"],
-      
-              city=shipping["city"],
-      
-              state=shipping["state"],
-      
-              pincode=shipping["pincode"],
-      
-              coupon_code=coupon_code,
-      
-              discount=item_discount,
-      
-          )
-      
-          Payment.objects.create(
+        item_total = item.product.price * item.quantity
 
-             order=order,
-         
-             payment_method=payment_method,
-         
-             transaction_id="TXN" + "".join(
-                 random.choices(
-                     string.digits,
-                     k=10
-                 )
-             ),
-         
-             amount=final_price,
-         
-             payment_status="Paid",
-         
-         )
+        item_discount = Decimal("0.00")
+
+        if total > 0:
+            item_discount = (
+                item_total / total
+            ) * discount
+
+        final_price = item_total - item_discount
+
+        order = Order.objects.create(
+
+            user=request.user,
+
+            product=item.product,
+
+            quantity=item.quantity,
+
+            total_price=final_price,
+
+            full_name=shipping["full_name"],
+
+            phone=shipping["phone"],
+
+            address=shipping["address"],
+
+            city=shipping["city"],
+
+            state=shipping["state"],
+
+            pincode=shipping["pincode"],
+
+            coupon_code=coupon_code,
+
+            discount=item_discount,
+
+        )
+
+        Payment.objects.create(
+
+            order=order,
+
+            payment_method=payment_method,
+
+            transaction_id="TXN" + "".join(
+                random.choices(
+                    string.digits,
+                    k=10
+                )
+            ),
+
+            amount=final_price,
+
+            payment_status="Paid",
+
+        )
+
+        # Reduce stock
+        item.product.stock -= item.quantity
+        item.product.save()
 
     cart_items.delete()
 
@@ -384,9 +372,7 @@ def place_order(request):
     request.session.pop("payment_method", None)
     request.session.pop("transaction", None)
 
-
     return redirect("my_orders")
-
 
 # =====================================================
 # MY ORDERS
