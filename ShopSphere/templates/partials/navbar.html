@@ -1,19 +1,131 @@
 <nav class="navbar">
+
+    <!-- Logo -->
     <div class="logo">
-        🛒 <span>ShopSphere</span>
+
+        <a href="{% url 'home' %}">
+            🛒 <span>ShopSphere</span>
+        </a>
+
     </div>
 
-    <div class="search-box">
-        <input type="text" placeholder="Search products...">
-        <button>Search</button>
+    <!-- Search Bar -->
+
+    <div class="search-container">
+
+        <form action="{% url 'home' %}" method="GET" class="search-box">
+
+            <input
+                type="text"
+                name="q"
+                placeholder="Search for Products..."
+                value="{{ request.GET.q }}"
+            >
+
+            <button type="submit">
+
+                <i class="fas fa-search"></i>
+
+            </button>
+
+        </form>
+
     </div>
+
+    <!-- Navigation -->
 
     <ul class="nav-links">
-        <li><a href="/">Home</a></li>
-        <li><a href="#">Products</a></li>
-        <li><a href="#">Categories</a></li>
-        <li><a href="#">Cart</a></li>
-        <li><a href="#">Login</a></li>
-        <li><a href="#">Register</a></li>
+
+        <li>
+
+            <a href="{% url 'home' %}">
+                <i class="fas fa-house"></i>
+                Home
+            </a>
+
+        </li>
+
+        <li>
+
+            <a href="{% url 'home' %}#categories">
+                <i class="fas fa-layer-group"></i>
+                Categories
+            </a>
+
+        </li>
+
+        <li>
+
+            <a href="{% url 'cart' %}">
+                <i class="fas fa-cart-shopping"></i>
+                Cart
+            </a>
+
+        </li>
+
+        <li>
+
+            <a href="{% url 'favorites' %}">
+                <i class="fas fa-heart"></i>
+                Wishlist
+            </a>
+
+        </li>
+
+        <li>
+
+            <a href="{% url 'my_orders' %}">
+                <i class="fas fa-box"></i>
+                Orders
+            </a>
+
+        </li>
+
+        {% if user.is_authenticated %}
+
+            <li>
+
+                <a href="{% url 'profile' %}">
+                    <i class="fas fa-user-circle"></i>
+                    {{ user.username }}
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="{% url 'logout' %}">
+                    <i class="fas fa-right-from-bracket"></i>
+                    Logout
+                </a>
+
+            </li>
+
+        {% else %}
+
+            <li>
+
+                <a href="{% url 'login' %}">
+                    <i class="fas fa-right-to-bracket"></i>
+                    Login
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="{% url 'register' %}" class="register-btn">
+
+                    <i class="fas fa-user-plus"></i>
+
+                    Register
+
+                </a>
+
+            </li>
+
+        {% endif %}
+
     </ul>
+
 </nav>

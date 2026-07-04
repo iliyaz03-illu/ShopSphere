@@ -1,0 +1,250 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="products">
+
+    <h2>👤 My Account</h2>
+
+    <br>
+
+    <div
+        style="
+            display:grid;
+            grid-template-columns:320px 1fr;
+            gap:35px;
+            align-items:start;
+        "
+    >
+
+        <!-- LEFT PROFILE CARD -->
+
+        <div class="card">
+
+            {% if profile.image %}
+
+                <img
+                    src="{{ profile.image.url }}"
+                    style="
+                        width:180px;
+                        height:180px;
+                        border-radius:50%;
+                        object-fit:cover;
+                        margin:auto;
+                    "
+                >
+
+            {% else %}
+
+                <div
+                    style="
+                        width:180px;
+                        height:180px;
+                        border-radius:50%;
+                        background:#2563eb;
+                        color:white;
+                        display:flex;
+                        justify-content:center;
+                        align-items:center;
+                        font-size:70px;
+                        margin:auto;
+                        font-weight:bold;
+                    "
+                >
+
+                    {{ request.user.username|first|upper }}
+
+                </div>
+
+            {% endif %}
+
+            <br>
+
+            <h2 style="text-align:center;">
+
+                {{ request.user.username }}
+
+            </h2>
+
+            <p
+                style="
+                    text-align:center;
+                    color:#777;
+                "
+            >
+
+                {{ request.user.email }}
+
+            </p>
+
+            <br>
+
+            <hr>
+
+            <br>
+
+            <h3 style="text-align:center;">
+
+                📅 Member Since
+
+            </h3>
+
+            <p style="text-align:center;">
+
+                {{ request.user.date_joined|date:"d M Y" }}
+
+            </p>
+
+        </div>
+
+        <!-- RIGHT SIDE -->
+
+        <div>
+
+            <!-- ACCOUNT SUMMARY -->
+
+            <div
+                style="
+                    display:grid;
+                    grid-template-columns:repeat(3,1fr);
+                    gap:20px;
+                    margin-bottom:30px;
+                "
+            >
+
+                <div class="card">
+
+                    <h1>📦</h1>
+
+                    <h2>{{ order_count }}</h2>
+
+                    <p>Orders</p>
+
+                </div>
+
+                <div class="card">
+
+                    <h1>❤️</h1>
+
+                    <h2>{{ wishlist_count }}</h2>
+
+                    <p>Wishlist</p>
+
+                </div>
+
+                <div class="card">
+
+                    <h1>🛒</h1>
+
+                    <h2>{{ cart_count }}</h2>
+
+                    <p>Cart</p>
+
+                </div>
+
+            </div>
+
+            <!-- EDIT PROFILE -->
+
+            <div class="card">
+
+                <h2>
+
+                    ✏️ Edit Profile
+
+                </h2>
+
+                <br>
+
+                <form
+                    method="POST"
+                    enctype="multipart/form-data"
+                >
+
+                    {% csrf_token %}
+
+                    {{ form.as_p }}
+
+                    <button
+                        type="submit"
+                    >
+
+                        💾 Update Profile
+
+                    </button>
+
+                </form>
+
+            </div>
+
+            <br>
+
+            <!-- ADDRESS -->
+
+            <div class="card">
+
+                <h2>
+
+                    📍 Saved Address
+
+                </h2>
+
+                <br>
+
+                <p>
+
+                    <strong>Phone :</strong>
+
+                    {{ profile.phone|default:"Not Added" }}
+
+                </p>
+
+                <br>
+
+                <p>
+
+                    <strong>Address :</strong>
+
+                    {{ profile.address|default:"Not Added" }}
+
+                </p>
+
+                <br>
+
+                <p>
+
+                    <strong>City :</strong>
+
+                    {{ profile.city|default:"Not Added" }}
+
+                </p>
+
+                <br>
+
+                <p>
+
+                    <strong>State :</strong>
+
+                    {{ profile.state|default:"Not Added" }}
+
+                </p>
+
+                <br>
+
+                <p>
+
+                    <strong>Pincode :</strong>
+
+                    {{ profile.pincode|default:"Not Added" }}
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

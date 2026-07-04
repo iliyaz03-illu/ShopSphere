@@ -1,28 +1,209 @@
-{% extends 'base.html' %}
-{% load static %}
+{% extends "base.html" %}
 
 {% block content %}
 
 <div class="product-detail">
 
-    <img src="{{ product.image.url }}" alt="{{ product.name }}" width="350">
+    <div class="product-detail-container">
 
-    <h1>{{ product.name }}</h1>
+        <!-- Left -->
+        <div class="product-image">
 
-    <h2>₹ {{ product.price }}</h2>
+            <img src="{{ product.image.url }}" alt="{{ product.name }}">
 
-    <p>{{ product.description }}</p>
+        </div>
 
-    <p><strong>Category:</strong> {{ product.category }}</p>
+        <!-- Right -->
+        <div class="product-info">
 
-    <p><strong>Stock:</strong> {{ product.stock }}</p>
+            <span class="product-category">
+                {{ product.category }}
+            </span>
 
-    <button>Add to Cart</button>
+            <h1>{{ product.name }}</h1>
 
-    <br><br>
+            <h3>{{ product.brand }}</h3>
 
-    <a href="/">⬅ Back to Home</a>
+            <h2>₹ {{ product.price }}</h2>
+
+            {% if product.stock > 0 %}
+
+                <p class="stock available">
+                    ✔ In Stock ({{ product.stock }})
+                </p>
+
+            {% else %}
+
+                <p class="stock unavailable">
+                    ✖ Out of Stock
+                </p>
+
+            {% endif %}
+
+            <p class="description">
+                {{ product.description }}
+            </p>
+
+            <br>
+
+            <a href="{% url 'add_to_cart' product.id %}">
+                <button class="btn-primary">
+                    🛒 Add to Cart
+                </button>
+            </a>
+
+            <a href="{% url 'toggle_favorite' product.id %}">
+                <button class="btn-secondary">
+                    ❤️ Wishlist
+                </button>
+            </a>
+
+        </div>
+
+    </div>
 
 </div>
+
+<hr>
+
+<!-- Related Products -->
+
+<section class="products">
+
+    <h2>Related Products</h2>
+
+    <div class="product-container">
+
+        {% for item in related_products %}
+
+        <div class="card">
+
+            <a href="{% url 'product_detail' item.id %}">
+
+                <img src="{{ item.image.url }}" alt="{{ item.name }}">
+
+                <h3>{{ item.name }}</h3>
+
+            </a>
+
+            <p>₹ {{ item.price }}</p>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+<hr>
+
+<!-- Customer Reviews -->
+
+<section class="products">
+
+    <h2>⭐ Customer Reviews</h2>
+
+    {% if user.is_authenticated %}
+
+    <div class="card">
+
+        <h3>Write a Review</h3>
+
+        <form action="{% url 'add_review' product.id %}" method="POST">
+
+            {% csrf_token %}
+
+            {{ review_form.as_p }}
+
+            <button type="submit">
+                Submit Review
+            </button>
+
+        </form>
+
+    </div>
+
+    <br>
+
+    {% else %}
+
+    <p>
+
+        <a href="{% url 'login' %}">Login</a>
+
+        to write a review.
+
+    </p>
+
+    {% endif %}
+
+    <h3>
+
+        Average Rating :
+
+        {% if average_rating %}
+
+            ⭐ {{ average_rating|floatformat:1 }}/5
+
+        {% else %}
+
+            No Ratings Yet
+
+        {% endif %}
+
+    </h3>
+
+    <br>
+
+    {% for review in reviews %}
+
+    <div class="card">
+
+        <h3>{{ review.user.username }}</h3>
+
+        <p>
+
+            Rating :
+
+            {% for i in "12345" %}
+
+                {% if forloop.counter <= review.rating %}
+
+                    ⭐
+
+                {% else %}
+
+                    ☆
+
+                {% endif %}
+
+            {% endfor %}
+
+        </p>
+
+        <p>
+
+            {{ review.comment }}
+
+        </p>
+
+        <small>
+
+            {{ review.created_at }}
+
+        </small>
+
+    </div>
+
+    <br>
+
+    {% empty %}
+
+    <p>No reviews yet.</p>
+
+    {% endfor %}
+
+</section>
 
 {% endblock %}

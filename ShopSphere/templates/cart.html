@@ -1,0 +1,237 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="products">
+
+    <h2>🛒 Shopping Cart</h2>
+
+    {% if cart_items %}
+
+    <div
+        style="
+            display:grid;
+            grid-template-columns:2fr 1fr;
+            gap:35px;
+            align-items:start;
+        "
+    >
+
+        <!-- LEFT SIDE -->
+
+        <div>
+
+            {% for item in cart_items %}
+
+            <div
+                class="card"
+                style="
+                    display:flex;
+                    gap:25px;
+                    align-items:center;
+                    margin-bottom:25px;
+                "
+            >
+
+                <img
+                    src="{{ item.product.image.url }}"
+                    alt="{{ item.product.name }}"
+                    style="
+                        width:150px;
+                        height:150px;
+                        object-fit:contain;
+                    "
+                >
+
+                <div style="flex:1; text-align:left;">
+
+                    <h3>{{ item.product.name }}</h3>
+
+                    <br>
+
+                    <p style="font-size:18px;color:#2563eb;font-weight:bold;">
+                        ₹ {{ item.product.price }}
+                    </p>
+
+                    <br>
+
+                    <strong>Quantity</strong>
+
+                    <div class="quantity-controls">
+
+                        <a href="{% url 'decrease_quantity' item.id %}">
+                            <button class="qty-btn">−</button>
+                        </a>
+
+                        <span class="qty-number">
+                            {{ item.quantity }}
+                        </span>
+
+                        <a href="{% url 'increase_quantity' item.id %}">
+                            <button class="qty-btn">+</button>
+                        </a>
+
+                    </div>
+
+                    <p>
+
+                        <strong>Total :</strong>
+
+                        ₹ {{ item.item_total }}
+
+                    </p>
+
+                    <br>
+
+                    <a href="{% url 'remove_from_cart' item.id %}">
+
+                        <button
+                            style="
+                                background:#dc2626;
+                                width:180px;
+                            "
+                        >
+                            🗑 Remove Item
+                        </button>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        <!-- RIGHT SIDE -->
+
+        <div>
+
+            <div
+                class="card"
+                style="
+                    position:sticky;
+                    top:100px;
+                "
+            >
+
+                <h2>Order Summary</h2>
+
+                <hr>
+
+                <br>
+
+                <p>
+
+                    Subtotal
+
+                    <span style="float:right;">
+
+                        ₹ {{ total }}
+
+                    </span>
+
+                </p>
+
+                <br>
+
+                <hr>
+
+                <br>
+
+                <h2>
+
+                    Grand Total
+
+                    <span style="float:right;color:#2563eb;">
+
+                        ₹ {{ total }}
+
+                    </span>
+
+                </h2>
+
+                <br><br>
+
+                <a href="{% url 'checkout' %}">
+
+                    <button>
+
+                        Proceed to Checkout →
+
+                    </button>
+
+                </a>
+
+                <br><br>
+
+                <a href="{% url 'home' %}">
+
+                    <button
+                        style="
+                            background:#16a34a;
+                        "
+                    >
+
+                        Continue Shopping
+
+                    </button>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% else %}
+
+    <div
+        class="card"
+        style="
+            max-width:600px;
+            margin:auto;
+            text-align:center;
+            padding:60px;
+        "
+    >
+
+        <h1 style="font-size:70px;">
+            🛒
+        </h1>
+
+        <h2>Your Cart is Empty</h2>
+
+        <br>
+
+        <p>
+
+            Looks like you haven't added any products yet.
+
+        </p>
+
+        <br><br>
+
+        <a href="{% url 'home' %}">
+
+            <button
+                style="
+                    width:250px;
+                "
+            >
+
+                Continue Shopping
+
+            </button>
+
+        </a>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

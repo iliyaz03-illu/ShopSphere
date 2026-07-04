@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="products">
+
+    <h1>Order Details</h1>
+
+    <br>
+
+    <div class="card">
+
+        <h3>Order #{{ order.id }}</h3>
+
+        <hr><br>
+
+        <p>
+            <strong>Product:</strong>
+            {{ order.product.name }}
+        </p>
+
+        <p>
+            <strong>Quantity:</strong>
+            {{ order.quantity }}
+        </p>
+
+        <p>
+            <strong>Total Price:</strong>
+            ₹ {{ order.total_price }}
+        </p>
+
+        <p>
+            <strong>Discount:</strong>
+            ₹ {{ order.discount }}
+        </p>
+
+        <p>
+            <strong>Coupon:</strong>
+
+            {% if order.coupon_code %}
+
+                {{ order.coupon_code }}
+
+            {% else %}
+
+                None
+
+            {% endif %}
+
+        </p>
+
+        <p>
+            <strong>Status:</strong>
+
+            <span style="color:#2563eb;font-weight:bold;">
+                {{ order.status }}
+            </span>
+
+        </p>
+
+        <hr>
+
+        <h3>Shipping Address</h3>
+
+        <p><strong>{{ order.full_name }}</strong></p>
+
+        <p>{{ order.phone }}</p>
+
+        <p>{{ order.address }}</p>
+
+        <p>{{ order.city }}, {{ order.state }}</p>
+
+        <p>{{ order.pincode }}</p>
+
+        <hr>
+
+        <h3>Payment Details</h3>
+
+        {% if payment %}
+
+            <p>
+                <strong>Payment Method:</strong>
+                {{ payment.payment_method }}
+            </p>
+
+            <p>
+                <strong>Transaction ID:</strong>
+                {{ payment.transaction_id }}
+            </p>
+
+            <p>
+                <strong>Payment Status:</strong>
+
+                <span style="color:green;font-weight:bold;">
+                    {{ payment.payment_status }}
+                </span>
+
+            </p>
+
+        {% else %}
+
+            <p>No payment information found.</p>
+
+        {% endif %}
+
+    </div>
+
+    <br>
+
+    <div
+        style="
+            display:flex;
+            gap:15px;
+            margin-top:25px;
+        "
+    >
+
+        <a
+            href="{% url 'invoice' order.id %}"
+            style="flex:1;"
+        >
+
+            <button
+                style="
+                    width:100%;
+                    padding:15px;
+                    background:#2563eb;
+                    color:white;
+                    border:none;
+                    border-radius:8px;
+                    cursor:pointer;
+                "
+            >
+                🧾 Download Invoice
+            </button>
+
+        </a>
+
+        <a
+            href="{% url 'my_orders' %}"
+            style="flex:1;"
+        >
+
+            <button
+                style="
+                    width:100%;
+                    padding:15px;
+                    background:#16a34a;
+                    color:white;
+                    border:none;
+                    border-radius:8px;
+                    cursor:pointer;
+                "
+            >
+                ← Back to My Orders
+            </button>
+
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

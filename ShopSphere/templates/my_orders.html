@@ -1,0 +1,243 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="products">
+
+    <h2>📦 My Orders</h2>
+
+    <br>
+
+    {% if orders %}
+
+    {% for order in orders %}
+
+    <div
+        class="card"
+        style="
+            display:flex;
+            gap:30px;
+            align-items:center;
+            text-align:left;
+            margin-bottom:30px;
+            padding:25px;
+        "
+    >
+
+        <!-- Product Image -->
+
+        <div>
+
+            <img
+                src="{{ order.product.image.url }}"
+                alt="{{ order.product.name }}"
+                style="
+                    width:180px;
+                    height:180px;
+                    object-fit:contain;
+                "
+            >
+
+        </div>
+
+        <!-- Order Information -->
+
+        <div style="flex:1;">
+
+            <h2 style="margin-bottom:15px;">
+
+                {{ order.product.name }}
+
+            </h2>
+
+            <p>
+
+                <strong>Quantity :</strong>
+
+                {{ order.quantity }}
+
+            </p>
+
+            <br>
+
+            <p>
+
+                <strong>Total Paid :</strong>
+
+                <span
+                    style="
+                        color:#2563eb;
+                        font-size:24px;
+                        font-weight:bold;
+                    "
+                >
+
+                    ₹ {{ order.total_price }}
+
+                </span>
+
+            </p>
+
+            <br>
+
+            <p>
+
+                <strong>Ordered On :</strong>
+
+                {{ order.ordered_at|date:"d M Y, h:i A" }}
+
+            </p>
+
+            <br>
+
+            <strong>Status</strong>
+
+            <br><br>
+
+            {% if order.status == "Pending" %}
+
+                <span
+                    style="
+                        background:#FEF3C7;
+                        color:#B45309;
+                        padding:10px 20px;
+                        border-radius:30px;
+                        font-weight:bold;
+                    "
+                >
+                    🟡 Pending
+                </span>
+
+            {% elif order.status == "Processing" %}
+
+                <span
+                    style="
+                        background:#DBEAFE;
+                        color:#1D4ED8;
+                        padding:10px 20px;
+                        border-radius:30px;
+                        font-weight:bold;
+                    "
+                >
+                    🔵 Processing
+                </span>
+
+            {% elif order.status == "Shipped" %}
+
+                <span
+                    style="
+                        background:#EDE9FE;
+                        color:#6D28D9;
+                        padding:10px 20px;
+                        border-radius:30px;
+                        font-weight:bold;
+                    "
+                >
+                    🚚 Shipped
+                </span>
+
+            {% elif order.status == "Delivered" %}
+
+                <span
+                    style="
+                        background:#DCFCE7;
+                        color:#15803D;
+                        padding:10px 20px;
+                        border-radius:30px;
+                        font-weight:bold;
+                    "
+                >
+                    ✅ Delivered
+                </span>
+
+            {% else %}
+
+                <span
+                    style="
+                        background:#FECACA;
+                        color:#991B1B;
+                        padding:10px 20px;
+                        border-radius:30px;
+                        font-weight:bold;
+                    "
+                >
+                    ❌ Cancelled
+                </span>
+
+            {% endif %}
+
+            <br><br><br>
+
+            <a href="{% url 'order_details' order.id %}">
+
+                <button
+                    style="
+                        width:240px;
+                    "
+                >
+
+                    📄 View Order Details
+
+                </button>
+
+            </a>
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+    {% else %}
+
+    <div
+        class="card"
+        style="
+            max-width:650px;
+            margin:auto;
+            text-align:center;
+            padding:60px;
+        "
+    >
+
+        <h1 style="font-size:70px;">
+
+            📦
+
+        </h1>
+
+        <br>
+
+        <h2>No Orders Yet</h2>
+
+        <br>
+
+        <p>
+
+            You haven't placed any orders yet.
+
+        </p>
+
+        <br><br>
+
+        <a href="{% url 'home' %}">
+
+            <button
+                style="
+                    width:250px;
+                "
+            >
+
+                Start Shopping
+
+            </button>
+
+        </a>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

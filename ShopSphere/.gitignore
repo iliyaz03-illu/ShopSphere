@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual Environment
+venv/
+.env
+
+# Django
+db.sqlite3
+media/
+
+# Static files collected for production
+staticfiles/
+
+# VS Code
+.vscode/
+
+# Backup folders
+ShopSphere_Backup/
